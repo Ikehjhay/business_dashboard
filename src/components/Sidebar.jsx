@@ -1,7 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { LayoutGrid, Package, ShoppingBag, Bell } from "lucide-react";
+import { LayoutGrid, Package, ShoppingBag, Bell, LogOut } from "lucide-react";
 import { api } from "../lib/api";
+import { logout } from "../lib/demoAuth";
 
 const LINKS = [
   { to: "/", label: "Dashboard", icon: LayoutGrid, end: true },
@@ -11,6 +12,7 @@ const LINKS = [
 ];
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   // Polls every 30s so the "needs attention" badge doesn't require a
   // manual refresh to notice a new escalation came in — cheap enough
   // for a single-count query, not worth a websocket for this.
@@ -21,13 +23,18 @@ export default function Sidebar() {
   });
   const pendingCount = pendingQuery.data?.length || 0;
 
+  function handleLogout() {
+    logout();
+    navigate("/login", { replace: true });
+  }
+
   return (
     <aside className="flex w-56 shrink-0 flex-col border-r border-line bg-surface px-3 py-5">
       <div className="mb-8 px-2">
         <div className="text-sm font-semibold text-ink">Your Business</div>
         <div className="text-xs text-muted">Orders, catalog & support</div>
       </div>
-      <nav className="flex flex-col gap-1">
+      <nav className="flex flex-1 flex-col gap-1">
         {LINKS.map(({ to, label, icon: Icon, end, badgeCount }) => (
           <NavLink
             key={to}
@@ -49,6 +56,13 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-paper hover:text-ink"
+      >
+        <LogOut size={16} strokeWidth={2} />
+        Log out
+      </button>
     </aside>
   );
 }
