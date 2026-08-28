@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import EmptyState from "../components/EmptyState";
 
@@ -91,14 +92,14 @@ export default function DashboardHomePage() {
       <p className="mb-6 text-sm text-muted">Support & order activity</p>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <a href="/handoffs">
+        <Link to="/handoffs">
           <StatCard
             label="Needs attention"
             value={pendingCount}
             hint={pendingCount > 0 ? "tap to review →" : "all clear"}
             alert={pendingCount > 0}
           />
-        </a>
+        </Link>
         <StatCard label="Conversations (30d)" value={t.conversations.last_30_days} hint={`${t.conversations.all_time} all time`} />
         <StatCard label="Open orders (30d)" value={openOrders} hint="pending, processing, or awaiting confirmation" />
         <StatCard label="Completed orders (30d)" value={ordersToday.completed || 0} />
@@ -112,9 +113,9 @@ export default function DashboardHomePage() {
       <div className="mt-6 rounded-[10px] border border-line bg-surface p-5">
         <div className="mb-3 text-sm font-medium text-ink">Quick links</div>
         <div className="flex flex-wrap gap-3 text-sm">
-          <a href="/orders" className="text-accent-dark hover:underline">See your orders →</a>
-          <a href="/catalog" className="text-accent-dark hover:underline">Manage catalog →</a>
-          <a href="/handoffs" className="text-accent-dark hover:underline">Review escalations →</a>
+          <Link to="/orders" className="text-accent-dark hover:underline">See your orders →</Link>
+          <Link to="/catalog" className="text-accent-dark hover:underline">Manage catalog →</Link>
+          <Link to="/handoffs" className="text-accent-dark hover:underline">Review escalations →</Link>
         </div>
       </div>
     </div>
